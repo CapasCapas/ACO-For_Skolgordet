@@ -12,6 +12,8 @@ def PrintMap():
         for y in x:
             if row == GoalX and idx == GoalY:
                 print("*", end=" ")
+            elif row == X and idx == Y:
+                print("X", end=" ")
             else:
                 print(y,end = " ")
             idx += 1
@@ -25,7 +27,7 @@ def TillbackaVextning(Xa, Ya, TilpacaVext):
         Yt = 0
         while Yt < Ya: 
             if Gride[Xt][Yt] > 1:
-                Gride[Xt][Yt] -= TilpacaVext
+                Gride[Xt][Yt] = Gride[Xt][Yt] / TilpacaVext 
             Yt += 1
         Xt += 1
 
@@ -34,28 +36,30 @@ def TillbackaVextning(Xa, Ya, TilpacaVext):
 
 from array import *
 Xa = 15
-Ya = 20
+Ya = 30
 #max x och y
 MXaxel = Xa - 1 
 MYaxel = Ya - 1
 X = 1
 Y = 1
-GoalX = 9
-GoalY = 10
+GoalX = 0
+GoalY = 0
 GoalMod = 20
 Nertramp = 2
 rep = 0
-TilpacaVext = 1
+TilpacaVext = 2
+#[StartX, StartY, SlufX, SlutY]
+StartOchSlutStelen = [[2, 4, 13, 25], [2, 25, 4, 13], [13, 4, 2, 25], [13, 25, 2, 4]]
 
 Gride = [[1 for i in range(Ya)]for j in range(Xa)] 
 def new_func(Gride, X, Y, GoalX, GoalY,rep):
     rep = 0
-    while ((X != GoalX) or (Y != GoalY)) and rep < 300:
+    while ((X != GoalX) or (Y != GoalY)) and rep < 1000:
     #genererar vilket värde sam den ska till 
-        Up = random.randrange(1,11)
-        Ner = random.randrange(1,11)
-        Hor = random.randrange(1,11)
-        Ver = random.randrange(1,11)
+        Up = random.randrange(1,31)
+        Ner = random.randrange(1,31)
+        Hor = random.randrange(1,31)
+        Ver = random.randrange(1,31)
     #Här legs det till ma vägen är trampad 
         Gride[X][Y] += Nertramp
         
@@ -95,11 +99,17 @@ def new_func(Gride, X, Y, GoalX, GoalY,rep):
     print (rep)
 
 l = 0
+ValAvStartOchSlut = 0 
 while l < 20: 
-    new_func( Gride, X, Y, GoalX, GoalY,rep)
-    #print(l)
-    TillbackaVextning(Xa, Ya, TilpacaVext)
+    for a in StartOchSlutStelen :
+        X = a[0]
+        Y = a[1]
+        GoalX = a[2]
+        GoalY = a[3]
+        new_func( Gride, X, Y, GoalX, GoalY,rep)
+        #PrintMap()
+        TillbackaVextning(Xa, Ya, TilpacaVext)
     l += 1
-    PrintMap()
+    
 
 
