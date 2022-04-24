@@ -19,31 +19,43 @@ def PrintMap():
         row += 1
     print()
 
+def TillbackaVextning(Xa, Ya, TilpacaVext):
+    Xt = 0
+    while Xt < Xa:
+        Yt = 0
+        while Yt < Ya: 
+            if Gride[Xt][Yt] > 1:
+                Gride[Xt][Yt] -= TilpacaVext
+            Yt += 1
+        Xt += 1
+
+
+
 
 from array import *
-Xa = 10
+Xa = 15
 Ya = 20
 #max x och y
 MXaxel = Xa - 1 
 MYaxel = Ya - 1
 X = 1
 Y = 1
-GoalX = 1
-GoalY = 1
-GoalMod = 10
-Nertramp = 1
+GoalX = 9
+GoalY = 10
+GoalMod = 20
+Nertramp = 2
 rep = 0
-TilpacaVext = 0.5
+TilpacaVext = 1
 
-Gride = [[0 for i in range(Ya)]for j in range(Xa)] 
+Gride = [[1 for i in range(Ya)]for j in range(Xa)] 
 def new_func(Gride, X, Y, GoalX, GoalY,rep):
     rep = 0
-    while (X != GoalX) or (Y != GoalY):
+    while ((X != GoalX) or (Y != GoalY)) and rep < 300:
     #genererar vilket värde sam den ska till 
-        Up = random.randrange(1,101)
-        Ner = random.randrange(1,101)
-        Hor = random.randrange(1,101)
-        Ver = random.randrange(1,101)
+        Up = random.randrange(1,11)
+        Ner = random.randrange(1,11)
+        Hor = random.randrange(1,11)
+        Ver = random.randrange(1,11)
     #Här legs det till ma vägen är trampad 
         Gride[X][Y] += Nertramp
         
@@ -80,12 +92,14 @@ def new_func(Gride, X, Y, GoalX, GoalY,rep):
         X = clamp(X, 1, MXaxel-1)
         Y = clamp(Y, 1, MYaxel-1)
         rep += 1
-        print (rep)
+    print (rep)
 
 l = 0
-while l < 10: 
+while l < 20: 
     new_func( Gride, X, Y, GoalX, GoalY,rep)
-    print(l)
-    print(rep)
+    #print(l)
+    TillbackaVextning(Xa, Ya, TilpacaVext)
     l += 1
+    PrintMap()
+
 
