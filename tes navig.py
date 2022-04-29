@@ -30,9 +30,10 @@ def TillbackaVextning(Xa, Ya, TilpacaVext):
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
-            
-            if Gride[Xt][Yt] > 140:
-                Gride[Xt][Yt] = Gride[Xt][Yt] / (TilpacaVext*4)
+            #Max är maxtalet en ruta kan vara 
+            Max = 400
+            if Gride[Xt][Yt] > Max:
+                Gride[Xt][Yt] = Max
             elif Gride[Xt][Yt] > 1:
                 Gride[Xt][Yt] = Gride[Xt][Yt] / TilpacaVext 
             Yt += 1
@@ -46,7 +47,7 @@ def SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY):
             F = (Gride[Xt][Yt]) * 10
             F = clamp(F, 0, 254)
             Ferg = (F, F, F)
-            if Gride[Xt][Yt] > 1: 
+            if Gride[Xt][Yt] > 0: 
                 pixAr[Xt][Yt] = Ferg
             elif Xt == GoalX and Yt == GoalY:
                 pixAr[Xt][Yt] = (250,0,0)
@@ -69,7 +70,7 @@ Y = 1
 GoalX = 0
 GoalY = 0
 GoalMod = 30
-Nertramp = 4
+Nertramp = 2
 rep = 0
 Black = (0,0,0)
 TilpacaVext = 1.05
