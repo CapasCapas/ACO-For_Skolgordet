@@ -83,10 +83,10 @@ GoalMod = 35
 Nertramp = 5
 rep = 0
 Black = (0,0,0)
-TilpacaVext = 1.03
-SlumpMax = 30
+TilpacaVext = 1.01
+SlumpMax = 40
 MaxNertramp = 10000000
-MaxF = 4000
+MaxF = 700
 Försök = 1000
 #[StartX, StartY, SlufX, SlutY]
 StartOchSlutStelen = [[6, 8, 70, 150], [6, 250, 70, 150], [130, 8, 70, 150], [130, 250, 6, 8]]
@@ -151,7 +151,7 @@ def new_func(Gride, X, Y, GoalX, GoalY,rep, MaxF,PGride, Xa, Ya):
     else:
         print ("[*]",rep)
         Hitarät(Xa, Ya,rep , PGride)
-        TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp)
+        #TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp)
 
 l = 0
 ValAvStartOchSlut = 0 
@@ -164,13 +164,13 @@ while l < (Försök/4):
         new_func( Gride, X, Y, GoalX, GoalY,rep, MaxF,PGride, Xa, Ya)
         #PrintMap()
         
-        
+        TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp)
         SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY)
     gameDisplay.fill(Black)
     l += 1
-Print("Klar")
+print("Klar")
 gameDisplay.fill(Black)
 SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY)
-sleep(5)
+sleep(100)
 
 
