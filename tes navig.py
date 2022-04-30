@@ -25,16 +25,16 @@ def PrintMap():
         row += 1
     print()
 
-def TillbackaVextning(Xa, Ya, TilpacaVext):
+def TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp):
     Xt = 0
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
             #Max är maxtalet en ruta kan vara 
-            Max = 400
-            if Gride[Xt][Yt] > Max:
-                Gride[Xt][Yt] = Max
-            elif Gride[Xt][Yt] > 1:
+            
+            #if Gride[Xt][Yt] > MaxNertramp:
+            #    Gride[Xt][Yt] = MaxNertramp
+            if Gride[Xt][Yt] > 1:
                 Gride[Xt][Yt] = Gride[Xt][Yt] / TilpacaVext 
             Yt += 1
         Xt += 1
@@ -55,7 +55,16 @@ def SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY):
         Xt += 1
     pygame.display.update()
 
-
+#Överför den privata vägen till den glubala
+def Hitarät(Xa, Ya,rep , PGride):
+    Xt = 0
+    while Xt < Xa:
+        Yt = 0
+        while Yt < Ya: 
+            #Överför alla ruter till det glubala nätet  
+            Gride[Xt][Yt] += (PGride[Xt][Yt])/ ((rep+1)/2)
+            Yt += 1
+        Xt += 1
 
 
 
@@ -67,17 +76,23 @@ MXaxel = Xa - 1
 MYaxel = Ya - 1
 X = 1
 Y = 1
+rep = 0
 GoalX = 0
 GoalY = 0
-GoalMod = 30
-Nertramp = 2
+GoalMod = 20
+Nertramp = 5
 rep = 0
 Black = (0,0,0)
-TilpacaVext = 1.05
-SlumpMax = 50
+TilpacaVext = 1.03
+SlumpMax = 100
+MaxNertramp = 10000000
+MaxF = 4000
 #[StartX, StartY, SlufX, SlutY]
-StartOchSlutStelen = [[2, 4, 70, 150], [2, 250, 70, 150], [130, 4, 70, 150], [130, 250, 2, 4]]
+StartOchSlutStelen = [[6, 8, 70, 150], [6, 250, 70, 150], [130, 8, 70, 150], [130, 250, 6, 8]]
+#glubal Grid 
 Gride = [[1 for i in range(Ya)]for j in range(Xa)] 
+#personlig grid
+PGride = [[1 for i in range(Ya)]for j in range(Xa)] 
 
 pygame.init()
 gameDisplay = pygame.display.set_mode((Xa, Ya))
@@ -86,9 +101,8 @@ pixAr = pygame.PixelArray(gameDisplay)
 #för att updatter
 
 
-def new_func(Gride, X, Y, GoalX, GoalY,rep):
+def new_func(Gride, X, Y, GoalX, GoalY,rep, MaxF,PGride, Xa, Ya):
     rep = 0
-    MaxF = 2000
     while ((X != GoalX) or (Y != GoalY)) and rep < MaxF:
     #genererar vilket värde sam den ska till 
         Up = random.randrange(1,(SlumpMax+1))
@@ -96,7 +110,7 @@ def new_func(Gride, X, Y, GoalX, GoalY,rep):
         Hor = random.randrange(1,(SlumpMax+1))
         Ver = random.randrange(1,(SlumpMax+1))
     #Här legs det till ma vägen är trampad 
-        Gride[X][Y] += Nertramp
+        PGride[X][Y] += Nertramp
         
         Up = Up + (Gride[X][Y+1])
         Ner = Ner + (Gride[X][Y-1])
@@ -132,27 +146,30 @@ def new_func(Gride, X, Y, GoalX, GoalY,rep):
         Y = clamp(Y, 1, MYaxel-1)
         rep += 1
     if rep == MaxF:
-        print( )
+        print("[X]")
     else:
-        print (rep)
+        print ("[*]",rep)
+        Hitarät(Xa, Ya,rep , PGride)
+        TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp)
 
 l = 0
 ValAvStartOchSlut = 0 
-while l < 100: 
+while l < 10000: 
     for a in StartOchSlutStelen :
         X = a[0]
         Y = a[1]
         GoalX = a[2]
         GoalY = a[3]
-        new_func( Gride, X, Y, GoalX, GoalY,rep)
+        new_func( Gride, X, Y, GoalX, GoalY,rep, MaxF,PGride, Xa, Ya)
         #PrintMap()
-        TillbackaVextning(Xa, Ya, TilpacaVext)
+        
+        
         SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY)
-    #gameDisplay.fill(Black)
+    gameDisplay.fill(Black)
     l += 1
 
 gameDisplay.fill(Black)
 SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY)
-sleep(1000)
+sleep(5)
 
 
