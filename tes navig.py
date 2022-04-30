@@ -79,14 +79,15 @@ Y = 1
 rep = 0
 GoalX = 0
 GoalY = 0
-GoalMod = 20
+GoalMod = 35
 Nertramp = 5
 rep = 0
 Black = (0,0,0)
 TilpacaVext = 1.03
-SlumpMax = 100
+SlumpMax = 30
 MaxNertramp = 10000000
 MaxF = 4000
+Försök = 1000
 #[StartX, StartY, SlufX, SlutY]
 StartOchSlutStelen = [[6, 8, 70, 150], [6, 250, 70, 150], [130, 8, 70, 150], [130, 250, 6, 8]]
 #glubal Grid 
@@ -154,7 +155,7 @@ def new_func(Gride, X, Y, GoalX, GoalY,rep, MaxF,PGride, Xa, Ya):
 
 l = 0
 ValAvStartOchSlut = 0 
-while l < 10000: 
+while l < (Försök/4): 
     for a in StartOchSlutStelen :
         X = a[0]
         Y = a[1]
@@ -167,7 +168,7 @@ while l < 10000:
         SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY)
     gameDisplay.fill(Black)
     l += 1
-
+Print("Klar")
 gameDisplay.fill(Black)
 SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY)
 sleep(5)
