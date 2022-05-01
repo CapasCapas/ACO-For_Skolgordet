@@ -39,20 +39,19 @@ def TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp):
             Yt += 1
         Xt += 1
 
-def SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY,pixArP,VisaKArta,VisaVargeVäg):
+def SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg):
     gameDisplay.fill(Black)
     Xt = 0
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
-            F = (Gride[Xt][Yt]) * 100
+            F = (Gride[Xt][Yt]) * 30
             F = clamp(F, 0, 254)
             Ferg = (F, F, F)
+            print(Gride[Xt][Yt])
             if Gride[Xt][Yt] > 1 and VisaKArta == 1: 
                 pixAr[Xt][Yt] = Ferg
                 print("tatta")
-            elif Xt == GoalX and Yt == GoalY and VisaKArta == 1:
-                pixAr[Xt][Yt] = (250,0,0)
 
             if PGride[Xt][Yt] > 1 and VisaVargeVäg == 1: 
                 pixArP[Xt][Yt] = (255,255,255)
@@ -104,11 +103,11 @@ Försök = 1000
 
 #Gui instelningar 
     #skriver ut försök
-FörsökUt = 1
+FörsökUt = 0
     #visar varje väg myran tar 
-VisaVargeVäg = 0
+VisaVargeVäg = 1
     #visar Gride 
-VisaKArta = 0
+VisaKArta = 1
     #printar vilket försök den är på
 PintFörsök = 0
 
@@ -191,8 +190,9 @@ def new_func(Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt):
         if rep == MaxF:
             print("[X]")
         else:
-            print ("[*]",rep)
-            Hitarät(Xa, Ya,rep , PGride)
+            print ("[*]",rep)  
+    if rep < MaxF
+        Hitarät(Xa, Ya,rep , PGride)
 
 l = 0
 ValAvStartOchSlut = 0 
@@ -207,13 +207,13 @@ while l < (Försök/4) or l == (Försök/4):
         #PrintMap()
         #gameDisplay.fill(Black)
         TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp)
-        SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY,pixArP,VisaKArta,VisaVargeVäg)
+        SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg)
     if PintFörsök == 1:
         print(l*4)
     l += 1
 print("Klar")
 gameDisplay.fill(Black)
-SjärmUpdaterare(Xa, Ya, pixAr, GoalX, GoalY,pixArP,VisaKArta,VisaVargeVäg)
+SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg)
 sleep(1000)
 
 
