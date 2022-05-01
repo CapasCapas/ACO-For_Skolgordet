@@ -25,16 +25,12 @@ def PrintMap():
         row += 1
     print()
 
-def TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp):
+def TillbackaVextning(Xa, Ya, TilpacaVext):
     Xt = 0
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
-            #Max är maxtalet en ruta kan vara 
-            
-            #if Gride[Xt][Yt] > MaxNertramp:
-            #    Gride[Xt][Yt] = MaxNertramp
-            if Gride[Xt][Yt] > 1:
+            if Gride[Xt][Yt] > TilpacaVext:
                 Gride[Xt][Yt] = Gride[Xt][Yt] - TilpacaVext 
             Yt += 1
         Xt += 1
@@ -45,10 +41,10 @@ def SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg):
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
-            F = (Gride[Xt][Yt]) * 30
+            F = (Gride[Xt][Yt]) * 100
             F = clamp(F, 0, 254)
             Ferg = (F, F, F)
-            print(Gride[Xt][Yt])
+            print((Gride[Xt][Yt]))
             if Gride[Xt][Yt] > 1 and VisaKArta == 1: 
                 pixAr[Xt][Yt] = Ferg
                 print("tatta")
@@ -105,7 +101,7 @@ Försök = 1000
     #skriver ut försök
 FörsökUt = 0
     #visar varje väg myran tar 
-VisaVargeVäg = 1
+VisaVargeVäg = 0
     #visar Gride 
 VisaKArta = 1
     #printar vilket försök den är på
@@ -191,7 +187,7 @@ def new_func(Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt):
             print("[X]")
         else:
             print ("[*]",rep)  
-    if rep < MaxF
+    if rep < MaxF:
         Hitarät(Xa, Ya,rep , PGride)
 
 l = 0
@@ -206,7 +202,7 @@ while l < (Försök/4) or l == (Försök/4):
         new_func( Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt)
         #PrintMap()
         #gameDisplay.fill(Black)
-        TillbackaVextning(Xa, Ya, TilpacaVext, MaxNertramp)
+        TillbackaVextning(Xa, Ya, TilpacaVext)
         SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg)
     if PintFörsök == 1:
         print(l*4)
