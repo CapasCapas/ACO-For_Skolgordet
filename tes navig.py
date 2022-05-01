@@ -25,30 +25,28 @@ def PrintMap():
         row += 1
     print()
 
-def TillbackaVextning(Xa, Ya, TilpacaVext):
+def TillbackaVextning(Xa, Ya, TilpacaVext, Gride):
     Xt = 0
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
-            if Gride[Xt][Yt] > TilpacaVext:
+            if Gride[Xt][Yt] > 1:
                 Gride[Xt][Yt] = Gride[Xt][Yt] - TilpacaVext 
+                Gride[Xt][Yt] = max(Gride[Xt][Yt], 1)
             Yt += 1
         Xt += 1
 
-def SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg):
+def SjärmUpdaterare(Xa, Ya, pixAr,pixArP, VisaKArta ,VisaVargeVäg, Gride, PGride):
     gameDisplay.fill(Black)
     Xt = 0
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
-            F = (Gride[Xt][Yt]) * 100
+            F = (Gride[Xt][Yt]) * 10
             F = clamp(F, 0, 254)
             Ferg = (F, F, F)
-            print((Gride[Xt][Yt]))
-            if Gride[Xt][Yt] > 1 and VisaKArta == 1: 
+            if (Gride[Xt][Yt] > 1 or Gride[Xt][Yt] == 1) and VisaKArta == 1: 
                 pixAr[Xt][Yt] = Ferg
-                print("tatta")
-
             if PGride[Xt][Yt] > 1 and VisaVargeVäg == 1: 
                 pixArP[Xt][Yt] = (255,255,255)
 
@@ -58,17 +56,17 @@ def SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg):
     
 
 #Överför den privata vägen till den glubala
-def Hitarät(Xa, Ya,rep , PGride):
+def Hitarät(Xa, Ya,rep, Gride , PGride):
     
     Xt = 0
     while Xt < Xa:
         Yt = 0
         while Yt < Ya: 
-            #Överför alla ruter till det glubala nätet  
-            Gride[Xt][Yt] += (PGride[Xt][Yt])/ (rep+1)
+            #Överför alla ruter till det globala nätet  
+            Gride[Xt][Yt] += (PGride[Xt][Yt])
             Yt += 1
         Xt += 1
-    PGride = [[1 for i in range(Ya)]for j in range(Xa)]
+    PGride = [[0 for i in range(Ya)]for j in range(Xa)]
 
 
 
@@ -83,9 +81,9 @@ StartOchSlutStelen = [[6, 8, 70, 150], [6, 250, 70, 150], [130, 8, 70, 150], [13
 
 
 #Variablar som kan endras
-GoalMod = 15
+GoalMod = 30
     #hur mycket den trampar ner 
-Nertramp = 2
+Nertramp = 5
     #tilbackavexten efter varje gång
 TilpacaVext = 1.5
     #maximala slumptalet
@@ -93,7 +91,7 @@ SlumpMax = 60
     #maximala antalet nertramp
 MaxNertramp = 10000000
     #hur många steg myrena kan ta
-MaxF = 900
+MaxF = 1300
     #hur många gånger den testar en väg
 Försök = 1000
 
@@ -138,7 +136,7 @@ pixArP = pygame.PixelArray(gameDisplayP)
 #för att updatter
 
 
-def new_func(Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt):
+def Navigering(Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt):
     rep = 0
     while ((X != GoalX) or (Y != GoalY)) and rep < MaxF:
     #genererar vilket värde sam den ska till 
@@ -188,7 +186,7 @@ def new_func(Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt):
         else:
             print ("[*]",rep)  
     if rep < MaxF:
-        Hitarät(Xa, Ya,rep , PGride)
+        Hitarät(Xa, Ya,rep, Gride , PGride)
 
 l = 0
 ValAvStartOchSlut = 0 
@@ -198,18 +196,18 @@ while l < (Försök/4) or l == (Försök/4):
         Y = a[1]
         GoalX = a[2]
         GoalY = a[3]
-        PGride = [[1 for i in range(Ya)]for j in range(Xa)]
-        new_func( Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt)
+        PGride = [[0 for i in range(Ya)]for j in range(Xa)]
+        Navigering( Gride, X, Y, GoalX, GoalY, rep, MaxF,PGride, Xa, Ya, FörsökUt)
         #PrintMap()
         #gameDisplay.fill(Black)
-        TillbackaVextning(Xa, Ya, TilpacaVext)
-        SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg)
+        TillbackaVextning(Xa, Ya, TilpacaVext, Gride)
+        SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg, Gride, PGride)
     if PintFörsök == 1:
         print(l*4)
     l += 1
 print("Klar")
 gameDisplay.fill(Black)
-SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg)
+SjärmUpdaterare(Xa, Ya, pixAr,pixArP,VisaKArta,VisaVargeVäg, Gride, PGride)
 sleep(1000)
 
 
